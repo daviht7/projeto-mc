@@ -24,13 +24,11 @@ public class CategoriaResource {
 	public List<Categoria> listar() {
 		
 		Categoria categoria = new Categoria(1,"Informática");
-
 		Categoria categoria2 = new Categoria(2,"Escritório");
 		
 		List<Categoria> categorias = new ArrayList<>();
 		
 		categorias.add(categoria);
-
 		categorias.add(categoria2);
 		
 		return categorias;
