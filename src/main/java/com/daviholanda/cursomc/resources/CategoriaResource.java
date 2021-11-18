@@ -1,6 +1,5 @@
 package com.daviholanda.cursomc.resources;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.daviholanda.cursomc.domain.Categoria;
+import com.daviholanda.cursomc.repository.CategoriaRepository;
 import com.daviholanda.cursomc.service.CategoriaService;
 
 @RestController
@@ -19,17 +19,14 @@ public class CategoriaResource {
 	
 	@Autowired
 	private CategoriaService categoriaService;
+	
+	@Autowired
+	private CategoriaRepository categoriaRepository;
 
 	@GetMapping()
 	public List<Categoria> listar() {
 		
-		Categoria categoria = new Categoria(1,"Informática");
-		Categoria categoria2 = new Categoria(2,"Escritório");
-		
-		List<Categoria> categorias = new ArrayList<>();
-		
-		categorias.add(categoria);
-		categorias.add(categoria2);
+		var categorias = categoriaRepository.findAll();
 		
 		return categorias;
 	}

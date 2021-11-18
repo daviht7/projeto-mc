@@ -15,9 +15,7 @@ public class CategoriaService {
 	private CategoriaRepository categoriaRepository;
 	
 	public Categoria buscar(Long id) {
-		
 		Optional<Categoria> categoria = categoriaRepository.findById(id);
-		
 		return categoria.orElse(null);
 	}
 
