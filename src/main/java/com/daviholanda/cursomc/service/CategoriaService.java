@@ -12,12 +12,12 @@ import com.daviholanda.cursomc.service.exceptions.ObjectNotFoundException;
 @Service
 public class CategoriaService {
 
-	@Autowired
-	private CategoriaRepository categoriaRepository;
-	
-	public Categoria buscar(Long id) {
-		Optional<Categoria> categoria = categoriaRepository.findById(id);
-		return categoria.orElseThrow(() -> new ObjectNotFoundException(String.format("Objeto não encontrado! Id : %s, tipo: %s", id, Categoria.class.getName() )));
-	}
+    @Autowired
+    private CategoriaRepository categoriaRepository;
+
+    public Categoria buscar(Long id) {
+        Optional<Categoria> categoria = categoriaRepository.findById(id);
+        return categoria.orElseThrow(() -> new ObjectNotFoundException(String.format("Objeto não encontrado! Id : %s, do tipo: %s", id, Categoria.class.getName())));
+    }
 
 }
