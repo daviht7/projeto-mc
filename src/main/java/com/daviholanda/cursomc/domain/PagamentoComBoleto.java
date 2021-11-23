@@ -3,7 +3,6 @@ package com.daviholanda.cursomc.domain;
 import com.daviholanda.cursomc.domain.enums.EstadoPagamento;
 
 import javax.persistence.Entity;
-import java.io.Serializable;
 import java.util.Date;
 
 @Entity
