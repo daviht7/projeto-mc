@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.daviholanda.cursomc.dto.CategoriaDTO;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity

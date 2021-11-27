@@ -1,6 +1,7 @@
 package com.daviholanda.cursomc.resources;
 
 import com.daviholanda.cursomc.domain.Categoria;
+import com.daviholanda.cursomc.dto.CategoriaDTO;
 import com.daviholanda.cursomc.repository.CategoriaRepository;
 import com.daviholanda.cursomc.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,10 @@ public class CategoriaResource {
     @Autowired
     private CategoriaService categoriaService;
 
-    @Autowired
-    private CategoriaRepository categoriaRepository;
-
     @GetMapping()
-    public List<Categoria> listar() {
-        var categorias = categoriaRepository.findAll();
-        return categorias;
+    public ResponseEntity<List<CategoriaDTO>> findAll() {
+        var categorias = categoriaService.findAll();
+        return ResponseEntity.ok().body(categorias);
     }
 
     @GetMapping("/{id}")

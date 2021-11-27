@@ -1,6 +1,7 @@
 package com.daviholanda.cursomc.service;
 
 import com.daviholanda.cursomc.domain.Categoria;
+import com.daviholanda.cursomc.dto.CategoriaDTO;
 import com.daviholanda.cursomc.repository.CategoriaRepository;
 import com.daviholanda.cursomc.service.exceptions.DataIntegrityException;
 import com.daviholanda.cursomc.service.exceptions.ObjectNotFoundException;
@@ -8,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoriaService {
@@ -19,6 +22,11 @@ public class CategoriaService {
     public Categoria find(Long id) {
         Optional<Categoria> categoria = categoriaRepository.findById(id);
         return categoria.orElseThrow(() -> new ObjectNotFoundException(String.format("Objeto não encontrado! Id : %s, do tipo: %s", id, Categoria.class.getName())));
+    }
+
+    public List<CategoriaDTO> findAll() {
+        List<CategoriaDTO> categoriasDTO = categoriaRepository.findAll().stream().map(x -> new CategoriaDTO(x)).collect(Collectors.toList());
+        return categoriasDTO;
     }
 
     public Categoria insert(Categoria obj) {
