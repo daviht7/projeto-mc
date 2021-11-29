@@ -1,9 +1,7 @@
 package com.daviholanda.cursomc.domain;
 
 import com.daviholanda.cursomc.domain.enums.TipoCliente;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,7 +18,7 @@ public class Cliente implements Serializable {
     private String nome;
     private String email;
     private String cpfCnpj;
-    private Long tipo;
+    private Integer tipo;
 
     @OneToMany(mappedBy = "cliente")
     private List<Endereco> enderecos = new ArrayList<>();
@@ -42,7 +40,7 @@ public class Cliente implements Serializable {
         this.nome = nome;
         this.email = email;
         this.cpfCnpj = cpfCnpj;
-        this.tipo = tipoCliente.getCod().longValue();
+        this.tipo = (tipoCliente == null) ? null : tipoCliente.getCod().intValue();
     }
 
     public Long getId() {
@@ -82,7 +80,8 @@ public class Cliente implements Serializable {
     }
 
     public void setTipoCliente(TipoCliente tipoCliente) {
-        this.tipo = tipoCliente.getCod().longValue();
+
+        this.tipo = tipoCliente.getCod().intValue();
     }
 
     public List<Endereco> getEnderecos() {
