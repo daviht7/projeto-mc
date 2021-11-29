@@ -1,7 +1,6 @@
 package com.daviholanda.cursomc.domain;
 
 import com.daviholanda.cursomc.domain.enums.EstadoPagamento;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -31,7 +30,7 @@ public abstract class Pagamento implements Serializable {
 
     public Pagamento(Long id, EstadoPagamento estado, Pedido pedido) {
         this.id = id;
-        this.estado = estado.getCod();
+        this.estado = estado == null ? null : estado.getCod();
         this.pedido = pedido;
     }
 

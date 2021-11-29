@@ -1,6 +1,7 @@
 package com.daviholanda.cursomc.service;
 
 import com.daviholanda.cursomc.domain.Categoria;
+import com.daviholanda.cursomc.domain.Cliente;
 import com.daviholanda.cursomc.dto.CategoriaDTO;
 import com.daviholanda.cursomc.repository.CategoriaRepository;
 import com.daviholanda.cursomc.service.exceptions.DataIntegrityException;
@@ -38,8 +39,9 @@ public class CategoriaService {
     }
 
     public Categoria update(Categoria obj) {
-        find(obj.getId());
-        return categoriaRepository.save(obj);
+        Categoria newObj = find(obj.getId());
+        updateData(newObj, obj);
+        return categoriaRepository.save(newObj);
     }
 
     public void delete(Long id) {
@@ -60,6 +62,10 @@ public class CategoriaService {
 
     public Categoria fromDTO(CategoriaDTO objDTO) {
         return new Categoria(objDTO.getId(), objDTO.getNome());
+    }
+
+    private void updateData(Categoria newObj, Categoria obj) {
+        newObj.setNome(obj.getNome());
     }
 
 }
