@@ -2,6 +2,7 @@ package com.daviholanda.cursomc.resources;
 
 import com.daviholanda.cursomc.domain.Cliente;
 import com.daviholanda.cursomc.dto.ClienteDTO;
+import com.daviholanda.cursomc.dto.ClienteNewDTO;
 import com.daviholanda.cursomc.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,7 +34,7 @@ public class ClienteResource {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteDTO objDTO) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDTO) {
 
 		Cliente obj = clienteService.fromDTO(objDTO);
 		obj = clienteService.insert(obj);
