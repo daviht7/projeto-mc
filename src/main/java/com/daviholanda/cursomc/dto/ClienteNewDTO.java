@@ -1,11 +1,13 @@
 package com.daviholanda.cursomc.dto;
 
-import com.daviholanda.cursomc.domain.Categoria;
+import com.daviholanda.cursomc.service.validation.ClienteInsert;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 
+@ClienteInsert
 public class ClienteNewDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -13,18 +15,30 @@ public class ClienteNewDTO implements Serializable {
     private Long id;
 
     @NotEmpty(message = "Preenchimento Obrigatório")
-    @Length(min = 5,max = 80,message = "O tamanho deve ser entre 5 e 80 caracteres")
+    @Length(min = 5, max = 80, message = "O tamanho deve ser entre 5 e 80 caracteres")
     private String nome;
+
+    @NotEmpty(message = "Preenchimento Obrigatório")
+    @Email
     private String email;
+
+    @NotEmpty(message = "Preenchimento Obrigatório")
     private String cpfOuCnpj;
+
+    @NotNull(message = "Preenchimento Obrigatório")
+    @Range(min = 1, max = 2)
     private Integer tipo;
 
+    @NotEmpty(message = "Preenchimento Obrigatório")
     private String logradouro;
+    @NotEmpty(message = "Preenchimento Obrigatório")
     private String numero;
     private String complemento;
     private String bairro;
+    @NotEmpty(message = "Preenchimento Obrigatório")
     private String cep;
 
+    @NotEmpty(message = "Preenchimento Obrigatório")
     private String telefone1;
     private String telefone2;
     private String telefone3;
