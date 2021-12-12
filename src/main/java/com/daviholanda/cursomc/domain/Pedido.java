@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
@@ -48,7 +49,7 @@ public class Pedido implements Serializable {
 
     public double getValorTotal() {
         double soma = 0.0;
-        for(ItemPedido ip : items) {
+        for (ItemPedido ip : items) {
             soma = soma + ip.getSubTotal();
         }
         return soma;
@@ -113,5 +114,21 @@ public class Pedido implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+
+        final StringBuilder sb = new StringBuilder("Pedido{");
+        sb.append("id=").append(id);
+        sb.append(", instante=").append(sdf.format(instante));
+        sb.append(", pagamento=").append(pagamento.getEstado().name());
+        sb.append(", cliente=").append(cliente.getNome());
+        sb.append(", enderecoDeEntrega=").append(enderecoDeEntrega.getLogradouro());
+        sb.append(", items=").append(items.toString());
+        sb.append('}');
+        return sb.toString();
     }
 }
