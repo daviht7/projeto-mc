@@ -53,14 +53,14 @@ public class PedidoService {
         pedido.getPagamento().setEstado(EstadoPagamento.PENDENTE);
         pedido.getPagamento().setPedido(pedido);
 
-        if(pedido.getPagamento() instanceof PagamentoComBoleto) {
+        if (pedido.getPagamento() instanceof PagamentoComBoleto) {
             PagamentoComBoleto pagto = (PagamentoComBoleto) pedido.getPagamento();
-            boletoService.preencherPagamentoComBoleto(pagto,pedido.getInstante());
+            boletoService.preencherPagamentoComBoleto(pagto, pedido.getInstante());
         }
         pedido = pedidoRepository.save(pedido);
         pagamentoRepository.save(pedido.getPagamento());
 
-        for(ItemPedido ip: pedido.getItems()) {
+        for (ItemPedido ip : pedido.getItems()) {
             ip.setDesconto(0.0);
             ip.setPreco(produtoService.find(ip.getProduto().getId()).getPreco());
             ip.setPedido(pedido);
