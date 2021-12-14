@@ -45,6 +45,9 @@ public class ClienteNewDTO implements Serializable {
 
     private Long cidadeId;
 
+    @NotEmpty
+    private String senha;
+
     public ClienteNewDTO() {
 
     }
@@ -159,5 +162,13 @@ public class ClienteNewDTO implements Serializable {
 
     public void setCidadeId(Long cidadeId) {
         this.cidadeId = cidadeId;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 }

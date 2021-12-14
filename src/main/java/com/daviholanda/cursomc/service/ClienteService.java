@@ -15,6 +15,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +31,9 @@ public class ClienteService {
 
     @Autowired
     private EnderecoRepository enderecoRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public Cliente find(Long id) {
         Optional<Cliente> cliente = clienteRepository.findById(id);
@@ -72,7 +76,7 @@ public class ClienteService {
     }
 
     public Cliente fromDTO(ClienteNewDTO objDTO) {
-       Cliente cli = new Cliente(null,objDTO.getNome(),objDTO.getEmail(), objDTO.getCpfOuCnpj(), TipoCliente.toEnum(objDTO.getTipo()));
+       Cliente cli = new Cliente(null,objDTO.getNome(),objDTO.getEmail(), objDTO.getCpfOuCnpj(), TipoCliente.toEnum(objDTO.getTipo()),bCryptPasswordEncoder.encode(objDTO.getSenha()));
 
        Cidade cidade = new Cidade(objDTO.getCidadeId(),null,null);
 
@@ -95,12 +99,14 @@ public class ClienteService {
 
 
     public Cliente fromDTO(ClienteDTO objDTO) {
-        return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(),null,null);
+        return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(),null,null,null);
     }
 
     private void updateData(Cliente newObj, Cliente obj) {
         newObj.setNome(obj.getNome());
         newObj.setEmail(obj.getEmail());
+        newObj.setSenha(obj.getSenha());
+
     }
 
 }
