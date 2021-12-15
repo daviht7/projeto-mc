@@ -2,6 +2,7 @@ package com.daviholanda.cursomc.service;
 
 import com.daviholanda.cursomc.domain.*;
 import com.daviholanda.cursomc.domain.enums.EstadoPagamento;
+import com.daviholanda.cursomc.domain.enums.Perfil;
 import com.daviholanda.cursomc.domain.enums.TipoCliente;
 import com.daviholanda.cursomc.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,16 +70,16 @@ public class DBService {
         Produto produto11 = new Produto(null, "Shampoo", 90.00);
 
         cat1.getProdutos().addAll(Arrays.asList(produto1, produto2, produto3));
-        cat2.getProdutos().addAll(Arrays.asList(produto2,produto4));
-        cat3.getProdutos().addAll(Arrays.asList(produto5,produto6));
-        cat4.getProdutos().addAll(Arrays.asList(produto1,produto2,produto3,produto7));
+        cat2.getProdutos().addAll(Arrays.asList(produto2, produto4));
+        cat3.getProdutos().addAll(Arrays.asList(produto5, produto6));
+        cat4.getProdutos().addAll(Arrays.asList(produto1, produto2, produto3, produto7));
         cat5.getProdutos().addAll(Arrays.asList(produto8));
-        cat6.getProdutos().addAll(Arrays.asList(produto9,produto10));
+        cat6.getProdutos().addAll(Arrays.asList(produto9, produto10));
         cat7.getProdutos().addAll(Arrays.asList(produto11));
 
         produto1.getCategorias().addAll(Arrays.asList(cat1));
-        produto2.getCategorias().addAll(Arrays.asList(cat1, cat2,cat4));
-        produto3.getCategorias().addAll(Arrays.asList(cat1,cat4));
+        produto2.getCategorias().addAll(Arrays.asList(cat1, cat2, cat4));
+        produto3.getCategorias().addAll(Arrays.asList(cat1, cat4));
         produto4.getCategorias().addAll(Arrays.asList(cat2));
         produto5.getCategorias().addAll(Arrays.asList(cat3));
         produto6.getCategorias().addAll(Arrays.asList(cat3));
@@ -98,22 +99,27 @@ public class DBService {
         est1.getCidades().addAll(Arrays.asList(c1));
         est2.getCidades().addAll(Arrays.asList(c2, c3));
 
-        categoriaRepository.saveAll(Arrays.asList(cat1, cat2,cat3,cat4,cat5,cat6,cat7));
-        produtoRepository.saveAll(Arrays.asList(produto1, produto2, produto3,produto4,produto5,produto6,produto7,produto8,produto9,produto10,produto11));
+        categoriaRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, cat7));
+        produtoRepository.saveAll(Arrays.asList(produto1, produto2, produto3, produto4, produto5, produto6, produto7, produto8, produto9, produto10, produto11));
 
         estadoRepository.saveAll(Arrays.asList(est1, est2));
 
         cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 
-        Cliente cli1 = new Cliente(null, "Davi Holanda", "daviht7@gmail.com", "05880478300", TipoCliente.PESSOAFISICA,bCryptPasswordEncoder.encode("davi8080"));
+        Cliente cli1 = new Cliente(null, "Davi Holanda", "daviht7@gmail.com", "05880478300", TipoCliente.PESSOAFISICA, bCryptPasswordEncoder.encode("davi8080"));
         cli1.getTelefones().addAll(Arrays.asList("85994185335", "85991835144"));
+
+        Cliente cli2 = new Cliente(null, "kelcya holanda", "kelcyaht7@gmail.com", "60554366398", TipoCliente.PESSOAFISICA, bCryptPasswordEncoder.encode("davi8080"));
+        cli2.getTelefones().addAll(Arrays.asList("85994185335", "85991835144"));
+        cli2.addPerfil(Perfil.ADMIN);
 
         Endereco e1 = new Endereco(null, "rua santiago", "279", "B", "Serrinha", "60510476", cli1, c2);
         Endereco e2 = new Endereco(null, "rua xx", "350", "B", "joaõ 23", "58585878", cli1, c2);
 
         cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+        cli2.getEnderecos().addAll(Arrays.asList(e1));
 
-        clienteRepository.save(cli1);
+        clienteRepository.saveAll(Arrays.asList(cli1,cli2));
 
         enderecoRepository.saveAll(Arrays.asList(e1, e2));
 
@@ -131,22 +137,22 @@ public class DBService {
 
         cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
 
-        pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
+        pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 
-        pagamentoRepository.saveAll(Arrays.asList(pagto1,pagto2));
+        pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
 
-        ItemPedido ip1 = new ItemPedido(ped1,produto1,0.00,1,2000.00);
-        ItemPedido ip2 = new ItemPedido(ped1,produto3,0.00,2,80.00);
-        ItemPedido ip3 = new ItemPedido(ped2,produto2,100.00,1,800.00);
+        ItemPedido ip1 = new ItemPedido(ped1, produto1, 0.00, 1, 2000.00);
+        ItemPedido ip2 = new ItemPedido(ped1, produto3, 0.00, 2, 80.00);
+        ItemPedido ip3 = new ItemPedido(ped2, produto2, 100.00, 1, 800.00);
 
-        ped1.getItems().addAll(Arrays.asList(ip1,ip2));
+        ped1.getItems().addAll(Arrays.asList(ip1, ip2));
         ped2.getItems().addAll(Arrays.asList(ip3));
 
         produto1.getItems().addAll(Arrays.asList(ip1));
         produto2.getItems().addAll(Arrays.asList(ip3));
         produto3.getItems().addAll(Arrays.asList(ip2));
 
-        itemPedidoRepository.saveAll(Arrays.asList(ip1,ip2,ip3));
+        itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 
     }
 }
