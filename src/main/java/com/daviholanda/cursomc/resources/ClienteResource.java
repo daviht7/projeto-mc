@@ -7,6 +7,7 @@ import com.daviholanda.cursomc.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -27,6 +28,7 @@ public class ClienteResource {
 		return ResponseEntity.ok(cliente);
 	}
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Cliente> delete(@PathVariable Long id) {
 		clienteService.delete(id);
@@ -52,6 +54,7 @@ public class ClienteResource {
 		return ResponseEntity.noContent().build();
 	}
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/page")
 	public ResponseEntity<Page<ClienteDTO>> findPage(@RequestParam(value="page",defaultValue="0") Integer page,
 													   @RequestParam(value="linesPerPage",defaultValue="2") Integer linesPerPage,
@@ -61,6 +64,7 @@ public class ClienteResource {
 		return ResponseEntity.ok().body(clientesPageDTO);
 	}
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping()
 	public ResponseEntity<List<ClienteDTO>> findAll() {
 		var clientes = clienteService.findAll();
