@@ -3,11 +3,14 @@ package com.daviholanda.cursomc.service;
 import com.daviholanda.cursomc.domain.Cidade;
 import com.daviholanda.cursomc.domain.Cliente;
 import com.daviholanda.cursomc.domain.Endereco;
+import com.daviholanda.cursomc.domain.enums.Perfil;
 import com.daviholanda.cursomc.domain.enums.TipoCliente;
 import com.daviholanda.cursomc.dto.ClienteDTO;
 import com.daviholanda.cursomc.dto.ClienteNewDTO;
 import com.daviholanda.cursomc.repository.ClienteRepository;
 import com.daviholanda.cursomc.repository.EnderecoRepository;
+import com.daviholanda.cursomc.security.UserSS;
+import com.daviholanda.cursomc.service.exceptions.AuthorizationException;
 import com.daviholanda.cursomc.service.exceptions.DataIntegrityException;
 import com.daviholanda.cursomc.service.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +39,15 @@ public class ClienteService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public Cliente find(Long id) {
-        Optional<Cliente> cliente = clienteRepository.findById(id);
-        return cliente.orElseThrow(() -> new ObjectNotFoundException(String.format("Objeto não encontrado! Id : %s, do tipo: %s", id, Cliente.class.getName())));
+
+        UserSS user = UserService.authenticated();
+
+        if(user != null && (user.hasRole(Perfil.ADMIN) || id.equals(user.getId().longValue()))) {
+            Optional<Cliente> cliente = clienteRepository.findById(id);
+            return cliente.orElseThrow(() -> new ObjectNotFoundException(String.format("Objeto não encontrado! Id : %s, do tipo: %s", id, Cliente.class.getName())));
+        }
+
+        throw new AuthorizationException("Acesso negado");
     }
 
     public List<ClienteDTO> findAll() {
