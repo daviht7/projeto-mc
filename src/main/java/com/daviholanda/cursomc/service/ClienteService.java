@@ -21,7 +21,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,11 +40,14 @@ public class ClienteService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    private S3Service s3Service;
+
     public Cliente find(Long id) {
 
         UserSS user = UserService.authenticated();
 
-        if(user != null && (user.hasRole(Perfil.ADMIN) || id.equals(user.getId().longValue()))) {
+        if (user != null && (user.hasRole(Perfil.ADMIN) || id.equals(user.getId().longValue()))) {
             Optional<Cliente> cliente = clienteRepository.findById(id);
             return cliente.orElseThrow(() -> new ObjectNotFoundException(String.format("Objeto não encontrado! Id : %s, do tipo: %s", id, Cliente.class.getName())));
         }
@@ -86,36 +91,42 @@ public class ClienteService {
     }
 
     public Cliente fromDTO(ClienteNewDTO objDTO) {
-       Cliente cli = new Cliente(null,objDTO.getNome(),objDTO.getEmail(), objDTO.getCpfOuCnpj(), TipoCliente.toEnum(objDTO.getTipo()),bCryptPasswordEncoder.encode(objDTO.getSenha()));
+        Cliente cli = new Cliente(null, objDTO.getNome(), objDTO.getEmail(), objDTO.getCpfOuCnpj(), TipoCliente.toEnum(objDTO.getTipo()), bCryptPasswordEncoder.encode(objDTO.getSenha()));
 
-       Cidade cidade = new Cidade(objDTO.getCidadeId(),null,null);
+        Cidade cidade = new Cidade(objDTO.getCidadeId(), null, null);
 
-       Endereco end = new Endereco(null,objDTO.getLogradouro(),objDTO.getNumero(),objDTO.getComplemento(),objDTO.getBairro(),objDTO.getCep(),cli,cidade);
+        Endereco end = new Endereco(null, objDTO.getLogradouro(), objDTO.getNumero(), objDTO.getComplemento(), objDTO.getBairro(), objDTO.getCep(), cli, cidade);
 
-       cli.getEnderecos().add(end);
+        cli.getEnderecos().add(end);
 
-       cli.getTelefones().add(objDTO.getTelefone1());
+        cli.getTelefones().add(objDTO.getTelefone1());
 
-       if(objDTO.getTelefone2() != null) {
-           cli.getTelefones().add(objDTO.getTelefone2());
-       }
+        if (objDTO.getTelefone2() != null) {
+            cli.getTelefones().add(objDTO.getTelefone2());
+        }
 
-        if(objDTO.getTelefone3() != null) {
+        if (objDTO.getTelefone3() != null) {
             cli.getTelefones().add(objDTO.getTelefone3());
         }
 
-       return cli;
+        return cli;
     }
 
 
     public Cliente fromDTO(ClienteDTO objDTO) {
-        return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(),null,null,null);
+        return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null, null);
     }
 
     private void updateData(Cliente newObj, Cliente obj) {
         newObj.setNome(obj.getNome());
         newObj.setEmail(obj.getEmail());
         newObj.setSenha(obj.getSenha());
+
+    }
+
+    public URI uploadProfilePicture(MultipartFile multipartFile) {
+
+        return s3Service.uploadFile(multipartFile);
 
     }
 
