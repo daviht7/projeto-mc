@@ -2,6 +2,7 @@ package com.daviholanda.cursomc.service;
 
 import com.daviholanda.cursomc.service.exceptions.FileException;
 import org.apache.commons.io.FilenameUtils;
+import org.imgscalr.Scalr;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -54,6 +55,24 @@ public class ImageService {
             throw new FileException("Erro ao ler arquivo");
         }
 
+    }
+
+    public BufferedImage cropSquare(BufferedImage sourceImg) {
+
+        int min = (sourceImg.getHeight() <= sourceImg.getWidth()) ? sourceImg.getHeight() : sourceImg.getWidth();
+
+        return Scalr.crop(
+                sourceImg,
+                (sourceImg.getWidth() / 2) - (min / 2),
+                (sourceImg.getHeight() / 2) - (min / 2),
+                min,
+                min
+        );
+
+    }
+
+    public BufferedImage resize(BufferedImage sourceImg, int size) {
+        return Scalr.resize(sourceImg, Scalr.Method.ULTRA_QUALITY, size);
     }
 
 
